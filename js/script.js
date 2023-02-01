@@ -38,6 +38,8 @@ const app = {
     },
   ],
 
+  nbTeachers: 0,
+
   init: function() {
     console.log('Je suis dans la fonction init');
 
@@ -45,10 +47,10 @@ const app = {
     app.createSpecialitySelect();
 
     const languageSelect = document.querySelector('.languages');
-    languageSelect.addEventListener('change', app.filterByLanguage);
+    languageSelect.addEventListener('change', app.filterByLanguageOrSpeciality);
 
     const specialitySelect = document.querySelector('.specialities');
-    specialitySelect.addEventListener('change', app.filterBySpeciality);
+    specialitySelect.addEventListener('change', app.filterByLanguageOrSpeciality);
   },
 
   createLanguageSelect: function() {
@@ -67,6 +69,7 @@ const app = {
     placeHolder.textContent = 'Choisissez un language';
     placeHolder.setAttribute('disabled', 'disabled');
     placeHolder.setAttribute('selected', 'selected');
+    placeHolder.setAttribute('value', 'placeholder')
     select.appendChild(placeHolder);
 
     const javaScriptOption = document.createElement('option');
@@ -93,6 +96,8 @@ const app = {
     placeHolder.textContent = 'Choisissez une spécialité';
     placeHolder.setAttribute('disabled', 'disabled');
     placeHolder.setAttribute('selected', 'selected');
+    placeHolder.setAttribute('value', 'placeholder')
+
     select.appendChild(placeHolder);
 
     const reactOption = document.createElement('option');
@@ -163,27 +168,28 @@ const app = {
     }
   },
 
-  filterByLanguage: function(event) {
-    const languageTeachers = app.teachers.filter(
-      (teacher) => event.target.value === teacher.base
-    );
+  filterByLanguageOrSpeciality: function() {
+    console.log('Je suis dans la fonction filterByLanguageOrSpeciality');
 
-    app.nbTeachers = languageTeachers.length;
+    const languagesSelect = document.querySelector('.languages');
+    const specialitiesSelect = document.querySelector('.specialities');
+
+    if (languagesSelect.value !== 'placeholder' && specialitiesSelect.value !== 'placeholder') {
+      listTeachers = app.teachers.filter(
+        (teacher) => languagesSelect.value === teacher.base && specialitiesSelect.value === teacher.speciality
+      );
+    } else {
+      console.log('coucou');
+      listTeachers = app.teachers.filter(
+        (teacher) => languagesSelect.value === teacher.base || specialitiesSelect.value === teacher.speciality
+      );
+    }
+
+    app.nbTeachers = listTeachers.length;
 
     app.createOrModifyCounter();
-    app.createList(languageTeachers);
+    app.createList(listTeachers);
   },
-
-  filterBySpeciality: function(event) {
-    const specialityTeachers = app.teachers.filter(
-      (teacher) => event.target.value === teacher.speciality
-    );
-
-    app.nbTeachers = specialityTeachers.length;
-
-    app.createOrModifyCounter();
-    app.createList(specialityTeachers);
-    },
 
 };
 
