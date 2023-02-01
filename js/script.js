@@ -4,6 +4,7 @@ const app = {
     console.log('Je suis dans la fonction init');
 
     app.createSelect();
+    app.createCounter();
     app.createList();
   },
 
@@ -27,6 +28,16 @@ const app = {
     phpOption.textContent = 'PHP';
     phpOption.setAttribute('value', 'PHP');
     select.appendChild(phpOption);
+  },
+
+  createCounter: function(count) {
+    // const container = document.getElementById('app');
+    const select = document.querySelector('.languages');
+    const counter = document.createElement('div');
+    counter.textContent = '3 profs trouvés';
+    counter.setAttribute('class', 'counter');
+    // container.appendChild(counter);
+    select.after(counter);
   },
 
   createList: function() {

@@ -22,6 +22,12 @@ body {
   font-size: 1.1rem;
 }
 
+.counter {
+  padding: 1.5rem 0 0.5rem 0;
+  font-size: 2rem;
+  border-bottom: 1px solid #bbb;
+}
+
 .list {
   color: white;
   padding: 1.5rem 0;
