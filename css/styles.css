@@ -6,3 +6,38 @@ body {
   background: #011020;
   font-family: sans-serif;
 }
+
+.container {
+  background-color: white;
+  margin: auto;
+  width: 900px;
+  padding: 2rem;
+}
+
+.languages {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #eee;
+  border-color: #bbb;
+  font-size: 1.1rem;
+}
+
+.list {
+  color: white;
+  padding: 1.5rem 0;
+}
+
+.list li {
+  background-color: #0052a9;
+  margin: 0.2rem;
+  padding: 1rem;
+  border-radius: 0.2rem;
+}
+
+.list span {
+  background-color: #1771da;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  font-size: 0.8rem;
+}
