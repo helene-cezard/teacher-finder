@@ -53,34 +53,39 @@ const app = {
     specialitySelect.addEventListener('change', app.filterByLanguageOrSpeciality);
   },
 
+  createNewElement: function(element, parent, attributes, content) {
+    const newElement = document.createElement(element);
+    
+    for(let attribute in attributes)
+    {
+      let value = attributes[attribute];
+      newElement.setAttribute(attribute, value);
+    }
+
+    newElement.textContent = content;
+
+    parent.appendChild(newElement);
+
+    return newElement;
+  },
+
   createLanguageSelect: function() {
     console.log('Je suis dans la fonction createLanguageSelect');
 
     const container = document.getElementById('app');
-    const form = document.createElement('form');
-    form.setAttribute('class', 'selectForm');
-    container.appendChild(form);
 
-    const select = document.createElement('select');
-    select.setAttribute('class', 'languages');
-    form.appendChild(select);
+    const form = app.createNewElement('form', container, {'class' : 'selectForm'});
 
-    const placeHolder = document.createElement('option');
-    placeHolder.textContent = 'Choisissez un language';
-    placeHolder.setAttribute('disabled', 'disabled');
-    placeHolder.setAttribute('selected', 'selected');
-    placeHolder.setAttribute('value', 'placeholder')
-    select.appendChild(placeHolder);
 
-    const javaScriptOption = document.createElement('option');
-    javaScriptOption.textContent = 'JavaScript';
-    javaScriptOption.setAttribute('value', 'JavaScript');
-    select.appendChild(javaScriptOption);
+    const select = app.createNewElement('select', form, {'class' : 'languages'});
 
-    const phpOption = document.createElement('option');
-    phpOption.textContent = 'PHP';
-    phpOption.setAttribute('value', 'PHP');
-    select.appendChild(phpOption);
+    app.createNewElement('option', select, {
+      'value' : 'placeholder', 'disabled' : 'disabled', 'selected' : 'selected'
+    }, 'Choisissez un langage');
+
+    app.createNewElement('option', select, {'value' : 'JavaScript'}, 'JavaScript');
+
+    app.createNewElement('option', select, {'value' : 'PHP'}, 'PHP');
   },
 
   createSpecialitySelect: function() {
@@ -88,37 +93,17 @@ const app = {
 
     const form = document.querySelector('.selectForm');
 
-    const select = document.createElement('select');
-    select.setAttribute('class', 'specialities');
-    form.appendChild(select);
+    const select = app.createNewElement('select', form, {'class' : 'specialities'});
 
-    const placeHolder = document.createElement('option');
-    placeHolder.textContent = 'Choisissez une spécialité';
-    placeHolder.setAttribute('disabled', 'disabled');
-    placeHolder.setAttribute('selected', 'selected');
-    placeHolder.setAttribute('value', 'placeholder')
+    app.createNewElement('option', select,{'value' : 'placeholder', 'disabled' : 'disabled', 'selected' : 'selected'}, 'Choisissez une spécialité');
 
-    select.appendChild(placeHolder);
+    app.createNewElement('option', select, {'value' : 'React'}, 'React');
 
-    const reactOption = document.createElement('option');
-    reactOption.textContent = 'React';
-    reactOption.setAttribute('value', 'React');
-    select.appendChild(reactOption);
+    app.createNewElement('option', select, {'value' : 'Symfony'}, 'Symfony');
 
-    const symfonyOption = document.createElement('option');
-    symfonyOption.textContent = 'Symfony';
-    symfonyOption.setAttribute('value', 'Symfony');
-    select.appendChild(symfonyOption);
+    app.createNewElement('option', select, {'value' : 'WordPress'}, 'WordPress');
 
-    const wordpressOption = document.createElement('option');
-    wordpressOption.textContent = 'WordPress';
-    wordpressOption.setAttribute('value', 'WordPress');
-    select.appendChild(wordpressOption);
-
-    const dataOption = document.createElement('option');
-    dataOption.textContent = 'Data';
-    dataOption.setAttribute('value', 'Data');
-    select.appendChild(dataOption);
+    app.createNewElement('option', select, {'value' : 'Data'}, 'Data');
   },
 
   createOrModifyCounter: function() {
@@ -127,14 +112,28 @@ const app = {
     
       const form = document.querySelector('.selectForm');
       const counter = document.createElement('div');
-      counter.textContent = this.nbTeachers + ' profs trouvés';
+
+      if (this.nbTeachers == 0) {
+        counter.textContent = 'Aucun prof trouvé';
+      } else if (this.nbTeachers == 1) {
+        counter.textContent = '1 prof trouvé';
+      } else {
+        counter.textContent = this.nbTeachers + ' profs trouvés';
+      }
+
       counter.setAttribute('class', 'counter');
       form.after(counter);
 
     } else {
 
       const counter = document.querySelector('.counter');
-      counter.textContent = this.nbTeachers + ' profs trouvés';
+      if (this.nbTeachers == 0) {
+        counter.textContent = 'Aucun prof trouvé';
+      } else if (this.nbTeachers == 1) {
+        counter.textContent = '1 prof trouvé';
+      } else {
+        counter.textContent = this.nbTeachers + ' profs trouvés';
+      }
     }
   },
 
@@ -148,23 +147,15 @@ const app = {
       container.removeChild(existingList);
     }
 
-    const list = document.createElement('ul');
-    list.setAttribute('class', 'list')
-    container.appendChild(list);
+    const list = app.createNewElement('ul', container, {'class' : 'list'})
 
     for (teacher of languageTeachers) {
 
-      const listElement = document.createElement('li');
-      listElement.textContent = teacher.name;
-      list.appendChild(listElement);
+      const listElement = app.createNewElement('li', list, {}, teacher.name);
 
-      const tag = document.createElement('span');
-      tag.textContent = teacher.base;
-      listElement.appendChild(tag);
+      app.createNewElement('span', listElement, {}, teacher.base);
 
-      const SpecialityTag = document.createElement('span');
-        SpecialityTag.textContent = teacher.speciality;
-        listElement.appendChild(SpecialityTag);
+        app.createNewElement('span', listElement, {}, teacher.speciality);
     }
   },
 
@@ -179,7 +170,6 @@ const app = {
         (teacher) => languagesSelect.value === teacher.base && specialitiesSelect.value === teacher.speciality
       );
     } else {
-      console.log('coucou');
       listTeachers = app.teachers.filter(
         (teacher) => languagesSelect.value === teacher.base || specialitiesSelect.value === teacher.speciality
       );
