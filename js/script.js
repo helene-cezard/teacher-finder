@@ -1,11 +1,52 @@
 const app = {
 
+  teachers: [
+    {
+      name: 'Loris',
+      base: 'PHP',
+      speciality: 'WordPress',
+    },
+    {
+      name: 'Jean',
+      base: 'JavaScript',
+      speciality: 'Data',
+    },
+    {
+      name: 'Jean-Christophe',
+      base: 'PHP',
+      speciality: 'Symfony',
+    },
+    {
+      name: 'Jean-Philippe',
+      base: 'PHP',
+      speciality: 'Symfony',
+    },
+    {
+      name: 'Julien',
+      base: 'PHP',
+      speciality: 'React',
+    },
+    {
+      name: 'Vincent',
+      base: 'JavaScript',
+      speciality: 'React',
+    },
+    {
+      name: 'Tony',
+      base: 'JavaScript',
+      speciality: 'React',
+    },
+  ],
+
   init: function() {
     console.log('Je suis dans la fonction init');
 
     app.createSelect();
-    app.createCounter();
-    app.createList();
+    // app.createCounter();
+    // app.createList();
+
+    const languageSelect = document.querySelector('.languages');
+    languageSelect.addEventListener('change', app.filterByLanguage);
   },
 
   createSelect: function() {
@@ -31,33 +72,55 @@ const app = {
   },
 
   createCounter: function(count) {
-    // const container = document.getElementById('app');
-    const select = document.querySelector('.languages');
-    const counter = document.createElement('div');
-    counter.textContent = '3 profs trouvés';
-    counter.setAttribute('class', 'counter');
-    // container.appendChild(counter);
-    select.after(counter);
+    if (document.querySelector('.counter') === null) {
+    
+      const select = document.querySelector('.languages');
+      const counter = document.createElement('div');
+      counter.textContent = this.nbTeachers + ' profs trouvés';
+      counter.setAttribute('class', 'counter');
+      select.after(counter);
+
+    } else {
+      const counter = document.querySelector('.counter');
+      counter.textContent = this.nbTeachers + ' profs trouvés';
+    }
   },
 
-  createList: function() {
+  createList: function(languageTeachers) {
     console.log('Je suis dans la fonction createList');
 
     const container = document.getElementById('app');
+    const existingList = document.querySelector('.list');
+
+    if (existingList !== null) {
+      container.removeChild(existingList);
+    }
+
     const list = document.createElement('ul');
     list.setAttribute('class', 'list')
     container.appendChild(list);
 
-    for (let index = 0; index < 5; index++) {
+    for (teacher of languageTeachers) {
 
       const listElement = document.createElement('li');
-      listElement.textContent = 'Machin';
+      listElement.textContent = teacher.name;
       list.appendChild(listElement);
 
       const tag = document.createElement('span');
-      tag.textContent = 'Truc';
+      tag.textContent = teacher.base;
       listElement.appendChild(tag);
     }
+  },
+
+  filterByLanguage: function(event) {
+    const languageTeachers = app.teachers.filter(
+      (teacher) => event.target.value === teacher.base
+    );
+
+    app.nbTeachers = languageTeachers.length;
+
+    app.createCounter();
+    app.createList(languageTeachers);
   },
 
 };
