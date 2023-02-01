@@ -14,8 +14,12 @@ body {
   padding: 2rem;
 }
 
-.languages {
-  width: 100%;
+.selectForm {
+  display: flex;
+}
+
+.languages, .specialities {
+  width: 50%;
   padding: 0.8rem;
   background-color: #eee;
   border-color: #bbb;
